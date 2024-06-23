@@ -6,19 +6,19 @@
         INCLUDE "zos_video.asm"
         INCLUDE "zos_keyboard.asm"
 
-        DEFC BG_COLOR     = TEXT_COLOR_BLACK
-        DEFC CURDIR_COLOR = TEXT_COLOR_LIGHT_GRAY
-        DEFC TEXT_COLOR   = TEXT_COLOR_WHITE
+        .set BG_COLOR     , TEXT_COLOR_BLACK
+        .set CURDIR_COLOR , TEXT_COLOR_LIGHT_GRAY
+        .set TEXT_COLOR   , TEXT_COLOR_WHITE
 
         ; Designate the order of the sections before starting the code
         ; We can name the sections whatever we want, but it has to match
         ; across all the files
 
         ; ---------------- START ----------------;
-        SECTION TEXT
+        .text
         ORG 0x4000
-        SECTION DATA
-        SECTION BSS
+        .data
+        .section bss, "w"
         ; Give a hardcoded address to the BSS section so that it is not put inside the TEXT
         ; binary (and init.bin file is then smaller)
         ; This value should be adapted if the TEXT section grows bigger.
@@ -26,17 +26,17 @@
         ; ----------------  END  ----------------;
 
         ; Start the actual code
-        SECTION TEXT
-        DEFC PROMPT_CHAR = '>'
+        .text
+        .set PROMPT_CHAR, '>'
 
-        EXTERN error_print
+        .global error_print
 
         MACRO ERR_CHECK goto_label
                 or a
                 jr nz, goto_label
         ENDM
 
-        EXTERN parse_exec_cmd
+        .global parse_exec_cmd
 
 next_command:
         ; Set STDIN mode to cooked
@@ -195,7 +195,7 @@ bigbuffer_end:
         ; Allocate a few more bytes so that we can append some characters
         DEFS 2
 
-        PUBLIC init_static_buffer
-        PUBLIC init_static_buffer_end
+        .global init_static_buffer
+        .global init_static_buffer_end
 init_static_buffer: DEFS 1024
 init_static_buffer_end:
