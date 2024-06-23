@@ -2,22 +2,22 @@
 ;
 ; SPDX-License-Identifier: Apache-2.0
 
-    INCLUDE "zos_err.asm"
+    .include "zos_err.asm"
 
-    IFNDEF ZOS_SYS_HEADER
-    DEFINE ZOS_SYS_HEADER
+    .ifndef ZOS_SYS_HEADER
+    .set ZOS_SYS_HEADER, 0
 
     ; @brief Opened device value for the standard output
-    DEFC DEV_STDOUT = 0
+    .set DEV_STDOUT, 0
 
     ; @brief Opened device value for the standard input
-    DEFC DEV_STDIN = 1
+    .set DEV_STDIN, 1
 
     ; @brief Maximum length for a file/directory name
-    DEFC FILENAME_LEN_MAX = 16
+    .set FILENAME_LEN_MAX, 16
 
     ; @brief Maximum length for a path
-    DEFC PATH_MAX = 128
+    .set PATH_MAX, 128
 
     ; @note In the syscalls below, any pointer, buffer or structure address
     ; provided with an explicit or implicit (sizeof structure) size must NOT
@@ -40,15 +40,15 @@
     ;  -           So, if used with O_RDWR, reading after a write will read 0.
     ;  - O_TRUNC: No matter if O_RDWR or O_WRONLY, the size is first set to
     ;  -          0 before any other operation occurs.
-    DEFC O_WRONLY_BIT = 0
-    DEFC O_RDONLY = 0 << O_WRONLY_BIT
-    DEFC O_WRONLY = 1 << O_WRONLY_BIT
-    DEFC O_RDWR   = 2
-    DEFC O_TRUNC  = 1 << 2
-    DEFC O_APPEND = 2 << 2
-    DEFC O_CREAT  = 4 << 2
+    .set O_WRONLY_BIT, 0
+    .set O_RDONLY, 0 << O_WRONLY_BIT
+    .set O_WRONLY, 1 << O_WRONLY_BIT
+    .set O_RDWR  , 2
+    .set O_TRUNC , 1 << 2
+    .set O_APPEND, 2 << 2
+    .set O_CREAT , 4 << 2
     ; Only makes sense for drivers, not files
-    DEFC O_NONBLOCK = 1 << 5
+    .set O_NONBLOCK, 1 << 5
 
     ; @brief Directory entry size, in bytes.
     ; Its content would be represented like this in C:
@@ -56,7 +56,7 @@
     ;     uint8_t d_flags;
     ;     char    d_name[FILENAME_LEN_MAX];
     ; }
-    DEFC ZOS_DIR_ENTRY_SIZE = 1 + FILENAME_LEN_MAX
+    .set ZOS_DIR_ENTRY_SIZE, 1 + FILENAME_LEN_MAX
 
     ; @brief Date structure size, in bytes.
     ; Its content would be represented like this in C:
@@ -70,7 +70,7 @@
     ;     uint8_t  d_seconds;
     ; }
     ; All the fields above are in BCD format.
-    DEFC ZOS_DATE_SIZE = 17
+    .set ZOS_DATE_SIZE, 17
 
     ; @brief Stat file size, in bytes.
     ; Its content would be represented like this in C:
@@ -79,15 +79,15 @@
     ;     zos_date_t s_date;
     ;     char       s_name[FILENAME_LEN_MAX];
     ; }
-    DEFC ZOS_STAT_SIZE = 1 + ZOS_DATE_SIZE + FILENAME_LEN_MAX
+    .set ZOS_STAT_SIZE, 1 + ZOS_DATE_SIZE + FILENAME_LEN_MAX
 
     ; @brief Whence values. Check `seek` syscall for more info
-    DEFC SEEK_SET = 0
-    DEFC SEEK_CUR = 1
-    DEFC SEEK_END = 2
+    .set SEEK_SET, 0
+    .set SEEK_CUR, 1
+    .set SEEK_END, 2
 
     ; @brief Filesystems supported on Zeal 8-bit OS
-    DEFC FS_RAWTABLE = 0
+    .set FS_RAWTABLE, 0
 
     ; @brief Kernel configuration structure size, in bytes.
     ; Its content would be represented like this in C:
@@ -102,14 +102,14 @@
     ;     void*    c_prog_addr; // Virtual address where user programs are loaded
     ;     void*    c_custom;    // Custom area, target-specific
     ; } zos_config_t;
-    DEFC ZOS_CONFIG_SIZE = 12
+    .set ZOS_CONFIG_SIZE, 12
 
     ; @brief Override caller program when invoking `exec`
-    DEFC EXEC_OVERRIDE_PROGRAM = 0
+    .set EXEC_OVERRIDE_PROGRAM, 0
 
     ; @brief Keep the caller program in memory when invoking `exec`, until "child"
     ; program finishes its execution
-    DEFC EXEC_PRESERVE_PROGRAM = 1
+    .set EXEC_PRESERVE_PROGRAM, 1
 
 
     ; @brief Macro to abstract the syscall instruction
@@ -625,4 +625,4 @@
         ld PAIR, (0x0004)
     ENDM
 
-    ENDIF ; ZOS_SYS_HEADER
+    .endif ; ZOS_SYS_HEADER
