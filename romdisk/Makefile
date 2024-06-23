@@ -14,12 +14,12 @@ FILES_IN_IMG=$(BUILDIR)/$(BIN) simple.txt
 
 # If z88dk has been install through snap, the binary may be prefixed with "z88dk"
 # So choose any of z88dk-* or z88dk.z88dk-*, as long as one exists
-CC=$(shell which z88dk-z80asm z88dk.z88dk-z80asm | head -1)
+CC=$(shell which z80-elf-as | head -1)
 
 # On some versions of z88dk, -Oxxx switch does not generate the init_TEXT.bin file,
 # it only creates empty init.bin. Generate all the binaries in the current directory
 # and move them manually
-ASMFLAGS=-I$(ZOS_PATH)/kernel_headers/z88dk-z80asm -m -b
+ASMFLAGS=-I$(ZOS_PATH)/kernel_headers/binutils-z80
 
 
 .PHONY: all clean

@@ -14,7 +14,7 @@ endif
 ZOS_INCLUDE = $(ZOS_PATH)/kernel_headers/z88dk-z80asm/
 
 # Assembler binary name
-ASM = z88dk-z80asm
+ASM = z80-elf-as
 # Assembler flags
 ASMFLAGS = -b -I$(ZOS_INCLUDE) -O$(OUTPUT_DIR)
 
